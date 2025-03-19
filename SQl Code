@@ -1,0 +1,290 @@
+# I have combined the columns( jan to dec 2024)that are needed for my analysis into a single table named as year_2024_Analysis , 4208309 rows totally
+
+create table  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`  as
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from
+(
+
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Jan_2024` 
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Feb_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from  `myfirstproject-445620.cyclistic_bike_share_data.Mar_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Apr_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.May_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Jun_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.July_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Aug_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Sep_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from  `myfirstproject-445620.cyclistic_bike_share_data.Oct_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.Nov_2024`
+union all
+select ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.dec_2024`
+
+)
+
+# This query will return the number of rides as  total_number_of_rides is 4208309
+select 
+count(ride_id) as total_number_of_rides 
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+# This query will return the distinct number of rides as  total_number_of_rides is 4208188
+select 
+count (distinct(ride_id) )as distinct_total_number_of_rides 
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+# This query will return the number of ride_id that has displayed more than 1 time i.e these ids are duplicate ids
+select 
+  ride_id, started_at, ended_at,
+  count(*) as count_of_ride_id
+from`myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by ride_id, started_at , ended_at
+having count(*) > 1
+
+# sample view of the duplicate data
+select * from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+where ride_id = "1EF6CBC15814F5DA"
+
+#Delete the duplicate ride_id removed 242 rows
+delete from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+where ride_id in
+(select 
+  ride_id, 
+  from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by ride_id
+having count(*) > 1
+)
+
+#Showing only the distinct values after removing the duplicates 4208067 rows
+SELECT
+  DISTINCT(ride_id, rideable_type	,started_at	,ended_at , day_of_the_week , ride_length	,start_station_name	,start_station_id	,end_station_name	,end_station_id	,start_lat	,start_lng	,end_lat	,end_lng	,member_casual)
+FROM `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+# shows the values where the ended_at is less than the started_at 26 rows displayed
+select started_at , ended_at
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+where ended_at<started_at
+
+#delete the values where the ended_at is less than the started_at 26 rows displayed
+delete from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+where ended_at<started_at
+
+#After cleaning the data now 4208041 total rows displayed.Now we can start analysing.
+
+#i have already made a column for day_of_the_week in excel . Here giving the day for those numbers
+select day_of_the_week ,
+  case 
+   when day_of_the_week = 1 then 'Sunday'
+   when day_of_the_week = 2 then 'Monday'
+   when day_of_the_week = 3 then 'Tuesday'
+   when day_of_the_week = 4 then 'Wednesday'
+   when day_of_the_week = 5 then 'Thursday'
+   when day_of_the_week = 6 then 'Friday'
+  else
+  'Saturday'
+end as day
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+select *,
+extract(date from started_at) as started_date,
+extract(date from ended_at) as ended_date,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+
+# combining the queries into a single query .
+select *,
+  case 
+   when day_of_the_week = 1 then 'Sunday'
+   when day_of_the_week = 2 then 'Monday'
+   when day_of_the_week = 3 then 'Tuesday'
+   when day_of_the_week = 4 then 'Wednesday'
+   when day_of_the_week = 5 then 'Thursday'
+   when day_of_the_week = 6 then 'Friday'
+  else
+  'Saturday'
+end as day,
+extract(date from started_at) as started_date,
+extract(date from ended_at) as ended_date,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+
+#find the count of rides by rideable_type
+select rideable_type,
+count(ride_id) as num_of_rides
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by rideable_type
+
+/*	
+electric_bike 1432247	
+electric_scooter 47827	
+classic_bike 2727967 */
+
+#find the count of rides by rideable_type by member_casual
+select rideable_type,member_casual,
+count(ride_id) as num_of_rides_member_casual
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by rideable_type , member_casual
+
+#find the count of rides by member_casual
+select member_casual,
+count(ride_id) as num_of_trips,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by member_casual
+/*member 2686574	
+casual   1521467*/
+
+# Found the number of rides by month
+select member_casual,
+extract(month from started_at) as start_month,
+count(ride_id ) as num_of_ride_by_month,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by  member_casual , start_month
+order by member_casual, start_month
+
+
+# Found the number of rides by hour
+select member_casual,
+extract(hour from started_at) as hour,
+count(ride_id ) as num_of_ride_by_hour,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by  member_casual , hour
+order by member_casual, hour
+
+# Found the number of rides by week
+
+select member_casual,
+extract(dayofweek from started_at) as day,
+count(ride_id ) as num_of_ride_by_day,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by  member_casual , day
+order by member_casual, day
+
+
+# calculate the avg,max,min ride lengths in minutes
+
+select member_casual , start_station_name,
+timestamp_diff(ended_at, started_at, minute) AS ride_lengths,
+sum(timestamp_diff(ended_at, started_at, minute)) over(partition by member_casual) as Total_ride_length,
+avg(timestamp_diff(ended_at, started_at, minute)) over(partition by member_casual) as avg_ride_length,
+min(timestamp_diff(ended_at, started_at, minute)) over(partition by member_casual) as min_ride_length,
+max(timestamp_diff(ended_at, started_at, minute)) over(partition by member_casual) as max_ride_length,
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+
+# avg trip length in km
+SELECT 
+  rideable_type,
+  AVG(ST_DISTANCE(ST_GEOGPOINT(start_lng, start_lat), ST_GEOGPOINT(end_lng, end_lat))/1000) AS average_trip_length_km
+FROM 
+  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+GROUP BY 
+  rideable_type;
+
+
+#avg trip duration by rideable type and day of the week
+
+SELECT 
+  rideable_type,
+  FORMAT_TIMESTAMP('%A', TIMESTAMP(started_at)) AS day_of_week,
+  EXTRACT(DAYOFWEEK FROM started_at) as weekday_number,
+  ROUND(AVG(TIMESTAMP_DIFF(ended_at, started_at, SECOND)) / 60) AS average_trip_duration_minutes
+FROM 
+  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+WHERE 
+  started_at IS NOT NULL
+GROUP BY 
+  rideable_type,
+  day_of_week,
+  weekday_number
+ORDER BY 
+  rideable_type,
+  weekday_number;
+
+
+#identifying the busiest  days of the week
+
+select member_casual,day_of_the_week,
+row_number() over(partition by member_casual order by count(day_of_the_week)desc )rn
+from  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by day_of_the_week , member_casual
+
+#identifying the busiest hours
+
+select *
+from
+(
+  select member_casual,
+  extract(hour from started_at) as hour,
+  row_number() over(partition by member_casual order by count(started_at)desc)rn
+  from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+  group by member_casual, started_at
+)
+where rn=1
+order by member_casual desc
+
+
+
+#busiest hours in order
+
+select member_casual,
+extract(hour from started_at) as started_at,
+row_number() over(partition by member_casual order by count(started_at)desc )rn
+from  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by started_at , member_casual
+
+
+
+
+-- Starting location for member
+
+SELECT member_casual, start_station_name,
+AVG(start_lat) AS start_lat, 
+AVG(start_lng) AS start_lng,
+COUNT(*) AS total_rides
+FROM  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+WHERE member_casual = 'member'
+GROUP BY member_casual, start_station_name
+order by total_rides desc limit 10
+
+
+
+## Starting location for casual
+
+SELECT member_casual, start_station_name,
+COUNT(*) AS total_rides
+FROM  `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+WHERE member_casual = 'casual'
+GROUP BY member_casual, start_station_name
+order by total_rides desc limit 10
+
+
+# top number of rides between two stations
+
+select
+start_station_name,end_station_name,
+count(*) as ride_count
+from `myfirstproject-445620.cyclistic_bike_share_data.year_2024_Analysis`
+group by start_station_name,end_station_name 
+order by ride_count desc 
+
+
+
